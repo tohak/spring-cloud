@@ -1,0 +1,26 @@
+server:
+  port: 8082
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        # id - название, uri - урл по которому работать(lb чтоб не писать точный url), predicates -  условие, filters - фильтр(RewritePath перенаправление)
+        - id: users-status-check
+          uri: lb://users-ws
+          predicates:
+          - Path=/users-ws/users/status/check
+          - Method= GET
+          filters:
+          - RemoveRequestHeader=Cookie
+          - RewritePath=/users-ws/(?<segment>.*), /$\{segment}
+  application:
+    name: api-gateway
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8010/eureka/
+
