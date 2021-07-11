@@ -9,18 +9,9 @@ import javax.validation.constraints.Size;
 
 @Getter
 @Setter
-public class CreateUserRequestModel {
-
-    @Size(min = 2)
+public class CreateUserResponseModel {
     private String firstName;
-
-    @Size(min = 2)
     private String lastName;
-
-    @Size(min = 8, max = 16)
-    @Pattern(regexp = "(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])[0-9a-zA-Z]{8,}")
-    private String password;
-
-    @Email
+    private String userId;
     private String email;
 }

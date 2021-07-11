@@ -10,13 +10,13 @@
         <module name="Discovery" />
         <module name="account" />
         <module name="users" />
-        <module name="gataway" />
+        <module name="gateway" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="account" target="11" />
       <module name="Discovery" target="11" />
-      <module name="gataway" target="11" />
+      <module name="gateway" target="11" />
       <module name="users" target="11" />
     </bytecodeTargetLevel>
   </component>
@@ -24,7 +24,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="Discovery" options="-parameters" />
       <module name="account" options="-parameters" />
-      <module name="gataway" options="-parameters" />
+      <module name="gateway" options="-parameters" />
       <module name="users" options="-parameters" />
     </option>
   </component>
