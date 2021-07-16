@@ -11,21 +11,23 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.UUID;
 
 @Service
 public class UserServiceImp implements UserService {
 
-    @Autowired
-    private ModelMapper modelMapper; //96
+    private final ModelMapper modelMapper;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    public UserServiceImp(ModelMapper modelMapper, UserRepository userRepository) {
+        this.modelMapper = modelMapper;
+        this.userRepository = userRepository;
+    }
 
     @Override
     public UserDto createUser(UserDto userDetails) {

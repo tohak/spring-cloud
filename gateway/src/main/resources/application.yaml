@@ -8,19 +8,49 @@ spring:
           enabled: true
           lower-case-service-id: true
       routes:
-        # id - РЅР°Р·РІР°РЅРёРµ, uri - СѓСЂР» РїРѕ РєРѕС‚РѕСЂРѕРјСѓ СЂР°Р±РѕС‚Р°С‚СЊ(lb С‡С‚РѕР± РЅРµ РїРёСЃР°С‚СЊ С‚РѕС‡РЅС‹Р№ url), predicates -  СѓСЃР»РѕРІРёРµ, filters - С„РёР»СЊС‚СЂ(RewritePath РїРµСЂРµРЅР°РїСЂР°РІР»РµРЅРёРµ)
+        # id - название, uri - урл по которому работать(lb чтоб не писать точный url), predicates -  условие, filters - фильтр(RewritePath перенаправление)
         - id: users-status-check
           uri: lb://users-ws
           predicates:
-          - Path=/users-ws/users/status/check
-          - Method= GET
+            - Path=/users-ws/users/status/check
+            - Method=GET
+            - Header=Authorization, Bearer (.*)
           filters:
-          - RemoveRequestHeader=Cookie
-          - RewritePath=/users-ws/(?<segment>.*), /$\{segment}
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/users-ws/(?<segment>.*), /$\{segment}
+            - AuthorizationHeaderFilter
+        - id: users-ws
+          uri: lb://users-ws
+          predicates:
+            - Path=/users-ws/users
+            - Method=POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/users-ws/(?<segment>.*), /$\{segment}
+        - id: users-ws-login
+          uri: lb://users-ws
+          predicates:
+            - Path=/users-ws/users/login
+            - Method=POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/users-ws/(?<segment>.*), /$\{segment}
+        - id: users-ws-get-update-delete
+          uri: lb://users-ws
+          predicates:
+            - Path=/users-ws/users/**
+            - Method=GET,PUT,DELETE
+            - Header=Authorization, Bearer (.*)
+          filters:
+            - RemoveRequestHeader=Cookie
+            - AuthorizationHeaderFilter
+            - RewritePath=/users-ws/(?<segment>.*), /$\{segment}
   application:
     name: api-gateway
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:8010/eureka/
+token:
+  secret: 2021NaViVsBears
 

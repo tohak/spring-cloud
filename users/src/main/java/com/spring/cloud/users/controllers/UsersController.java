@@ -17,17 +17,18 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/users")
 public class UsersController {
-    private Environment env;
 
-    public UsersController(Environment env) {
+    private final Environment env;
+
+    private final ModelMapper modelMapper;
+
+    private final UserService userService;
+
+    public UsersController(Environment env, ModelMapper modelMapper, UserService userService) {
         this.env = env;
+        this.modelMapper = modelMapper;
+        this.userService = userService;
     }
-
-    @Autowired
-    private ModelMapper modelMapper;
-
-    @Autowired
-    private UserService userService;
 
     @GetMapping("/status/check")
     public String check() {

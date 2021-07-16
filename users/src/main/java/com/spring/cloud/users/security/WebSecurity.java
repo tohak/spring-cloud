@@ -1,7 +1,6 @@
 package com.spring.cloud.users.security;
 
 import com.spring.cloud.users.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -15,15 +14,18 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableWebSecurity
 public class WebSecurity extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    private Environment environment;
+    private final Environment environment;
+
+    public WebSecurity(UserService userService, Environment environment) {
+        this.userService = userService;
+        this.environment = environment;
+    }
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder(8);
     }
 
     @Override
@@ -41,7 +43,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     }
 
     private AuthenticationFilter getAuthenticationFilter() throws Exception {
-        AuthenticationFilter authenticationFilter = new AuthenticationFilter(authenticationManager(),userService, environment);
+        AuthenticationFilter authenticationFilter = new AuthenticationFilter(authenticationManager(), userService, environment);
+        authenticationFilter.setFilterProcessesUrl("/users/login");
         authenticationFilter.setAuthenticationManager(authenticationManager());
         return authenticationFilter;
     }
