@@ -6,7 +6,6 @@
         <option value="$PROJECT_DIR$/Discovery/pom.xml" />
         <option value="$PROJECT_DIR$/account/pom.xml" />
         <option value="$PROJECT_DIR$/users/pom.xml" />
-        <option value="$PROJECT_DIR$/gataway/pom.xml" />
         <option value="$PROJECT_DIR$/gateway/pom.xml" />
       </list>
     </option>
